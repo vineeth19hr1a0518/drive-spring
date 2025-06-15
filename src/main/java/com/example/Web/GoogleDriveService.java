@@ -1,9 +1,11 @@
 package com.example.Web;
 
 
+
+
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpRequest; // Import HttpRequest
-import com.google.api.client.http.HttpRequestInitializer; // Import HttpRequestInitializer
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -11,7 +13,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
-import com.google.auth.http.HttpCredentialsAdapter; // Correct import for HttpCredentialsAdapter
+import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,34 +21,31 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream; // Added import
+import java.io.ByteArrayInputStream; // Import for ByteArrayInputStream
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets; // Added import
+import java.nio.charset.StandardCharsets; // Import for StandardCharsets
 import java.security.GeneralSecurityException;
 import java.time.Month;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 
 
 @Service
 public class GoogleDriveService {
 
-    // Path to the service account JSON key file (for local development fallback)
-    // Made optional with ":" so it doesn't fail if the property isn't set (when using env var)
-    @Value("${google.drive.service-account-key-path:}")
-    private String serviceAccountKeyPath;
-
     // Inject the JSON key content directly from an environment variable (for production)
-    // If GOOGLE_APPLICATION_CREDENTIALS_JSON_STRING is empty/not set, it will be an empty string.
+    // If GOOGLE_APPLICATION_CREDENTIALS_JSON_STRING is empty/not set, it will default to empty string.
     @Value("${GOOGLE_APPLICATION_CREDENTIALS_JSON_STRING:}")
     private String serviceAccountKeyJsonString;
+
+    // Path to the service account JSON key file (for local development fallback)
+    // This will only be used if serviceAccountKeyJsonString is empty.
+    @Value("${google.drive.service-account-key-path:}") // Optional for local dev
+    private String serviceAccountKeyPath;
 
     @Value("${google.drive.root-folder-id}")
     private String rootFolderId;
@@ -57,29 +56,19 @@ public class GoogleDriveService {
     private Drive driveService;
     private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-    /**
-     * Initializes the Google Drive service client using the service account credentials.
-     * This method is called automatically after the bean's properties have been set.
-     * It prioritizes reading credentials from an environment variable for production,
-     * falling back to a classpath file for local development.
-     * @throws IOException If the service account key cannot be read from either source.
-     * @throws GeneralSecurityException If there's a problem with cryptographic operations.
-     */
     @PostConstruct
     public void init() throws IOException, GeneralSecurityException {
         InputStream serviceAccountStream = null;
         try {
             if (serviceAccountKeyJsonString != null && !serviceAccountKeyJsonString.isEmpty()) {
-                // Production (or when env var is set): Read JSON key from environment variable string
+                // Production: Read JSON key from environment variable
                 serviceAccountStream = new ByteArrayInputStream(serviceAccountKeyJsonString.getBytes(StandardCharsets.UTF_8));
-                System.out.println("Using service account credentials from environment variable.");
-            } else if (serviceAccountKeyPath != null && !serviceAccountKeyPath.isEmpty()) {
+            } else if (serviceAccountKeyPath != null && !serviceAccountKeyPath.isEmpty()){
                 // Local Development Fallback: Read JSON key from classpath file
                 ClassPathResource resource = new ClassPathResource(serviceAccountKeyPath);
                 serviceAccountStream = resource.getInputStream();
-                System.out.println("Using service account credentials from classpath file: " + serviceAccountKeyPath);
             } else {
-                throw new IOException("Google service account credentials not found. Neither environment variable 'GOOGLE_APPLICATION_CREDENTIALS_JSON_STRING' nor 'google.drive.service-account-key-path' property is configured.");
+                throw new IOException("Google service account credentials not found. Neither environment variable GOOGLE_APPLICATION_CREDENTIALS_JSON_STRING nor file path google.drive.service-account-key-path is configured.");
             }
 
             GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccountStream)
@@ -90,16 +79,16 @@ public class GoogleDriveService {
 
                 @Override
                 public void initialize(HttpRequest httpRequest) throws IOException {
-                    originalInitializer.initialize(httpRequest); // Apply the credentials
-                    httpRequest.setConnectTimeout(60000); // 60 seconds connection timeout
-                    httpRequest.setReadTimeout(60000);    // 60 seconds read timeout
+                    originalInitializer.initialize(httpRequest);
+                    httpRequest.setConnectTimeout(60000);
+                    httpRequest.setReadTimeout(60000);
                 }
             };
 
             driveService = new Drive.Builder(
                     GoogleNetHttpTransport.newTrustedTransport(),
                     JSON_FACTORY,
-                    requestInitializer) // Pass the custom HttpRequestInitializer
+                    requestInitializer)
                     .setApplicationName(applicationName)
                     .build();
         } finally {
@@ -109,20 +98,7 @@ public class GoogleDriveService {
         }
     }
 
-    /**
-     * Uploads a sales data file to Google Drive, organizing it into a dynamic folder structure:
-     * rootFolderId / MonthName / Market / Country / Brand-FromDate_ToDate.csv
-     *
-     * @param file The MultipartFile (CSV) to upload.
-     * @param monthNumber The numerical month (e.g., "06" for June).
-     * @param market The market name (e.g., "Amazon").
-     * @param country The country code (e.g., "US").
-     * @param brand The brand name (e.g., "Bryco").
-     * @param fromDate The start date of the data range (YYYY-MM-DD format).
-     * @param toDate The end date of the data range (YYYY-MM-DD format).
-     * @return The ID of the newly uploaded file in Google Drive.
-     * @throws IOException If any I/O error occurs during file processing or API interaction.
-     */
+    // ... (rest of your GoogleDriveService methods remain the same) ...
     public String uploadSalesDataFile(
             MultipartFile file,
             String monthNumber,
@@ -274,5 +250,4 @@ public class GoogleDriveService {
     public void deleteFile(String fileId) throws IOException {
         driveService.files().delete(fileId).execute();
     }
-
 }
