@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version> <!-- Keeping a stable 3.x Spring Boot version -->
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.example.Spring</groupId>
+	<artifactId>GoogleDrive</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>GoogleDrive</name>
+	<description>Spring Boot Application for Google Drive File Management and Frontend Serving</description>
+	<properties>
+		<java.version>17</java.version>
+		<!-- Google API client library versions -->
+		<google-api-client.version>1.33.0</google-api-client.version>
+		<google-auth-library.version>1.23.0</google-auth-library.version>
+		<!-- Google Drive Services API version as per your input -->
+		<google-api-services-drive.version>v3-rev197-1.25.0</google-api-services-drive.version>
+		<!-- Specific version for Google HTTP Client Jackson2, matching google-api-client's transitive version -->
+		<google-http-client-jackson2.version>1.39.2</google-http-client-jackson2.version>
+		<!-- Lombok version -->
+		<lombok.version>1.18.32</lombok.version>
+	</properties>
+	<dependencies>
+		<!-- Spring Boot Starter Web: Provides capabilities for building web applications (REST APIs)
+             and serving static content (your HTML/CSS frontend). -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- Google API Client Libraries for Java -->
+		<!-- Core Google API client library -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>${google-api-client.version}</version>
+		</dependency>
+		<!-- Library for handling OAuth2 authentication, including Service Accounts -->
+		<dependency>
+			<groupId>com.google.auth</groupId>
+			<artifactId>google-auth-library-oauth2-http</artifactId>
+			<version>${google-auth-library.version}</version>
+		</dependency>
+		<!-- Specific Google Drive API v3 service library -->
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-drive</artifactId>
+			<version>${google-api-services-drive.version}</version>
+		</dependency>
+		<!-- Explicitly add google-http-client-jackson2 to ensure JacksonFactory is resolved.
+             This typically brings in the necessary JSON factory implementation. -->
+		<dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-jackson2</artifactId>
+			<version>${google-http-client-jackson2.version}</version>
+		</dependency>
+
+		<!-- Lombok: (Optional but Highly Recommended)
+             Helps reduce boilerplate code for getters/setters, constructors etc.,
+             especially useful for DTOs and model classes. -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Spring Boot Starter Test: For writing unit and integration tests -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

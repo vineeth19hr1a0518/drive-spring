@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "filemanagerapi-463005",
+  "private_key_id": "ef089255ba53464c2515f3d039a0c417f1f68f31",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQDOvLlObN7sT22O\n25Ym4BJVrlfeL1IIq8Tsm8fFkQ0I2Z0sf4Xp3Wdvl8yDY4zReDoBb8McIADyh2DS\nmgqoV1luUCWymDPDxZK2h9ZmFiTy2y7lDDHD497bd/xxkR14OpV1nIAfBCQHvWr3\nD3aJGxQgzByl3YdAI2r+nMphTsMAGSTEWPIy2Fq+9HU4e0u5r317ZgmJLZqGyRn8\nhtbeZEN38/xWyU797IIo2pTTv74UaXbkOoyYUPBzYZ2E54fezwHoxwax/uGnDCsJ\niPD8s/URP6M4fDjmkuhzrciO18lNZ3FmpW0LH3ARODdTpa8GQ6hxtabhitwRxFnB\nayInKQRbAgMBAAECgf8+c27cQgcVW5O86UMdJehj+Zvm17nwOfNC28wn4lQNra8i\nbLix7Nqnhd5B0ntiIO9k1QjGIOTTCWeLjFJWiAx78Q9yOTK/RkULiVKQLsr6keZD\nSsETFm2RNAMOS3KbicGccFTuXvyDWgpLQmCMX6G08UkLfIq0Kql86zWM2j4NyP+p\nrKfJYJJ+aygaMqp9zKUidJn78l99IBSX3t0UFqFzPMNXdHKoFWIQDJSj3TkobJ0O\nFNaPCvQYr0CQGmTaPho+zFTRiKoYRsL+vjDvFpn713iKJROvB7/uLJ+trYqig85z\neWM+QECrOpXvyCpEurzezgL81D24EUNtk8lDYEECgYEA5wtA6GIRFEGp73UkNkgF\n7/iFHIvHaKIAwImJXk8YE0iVMnBQn74ddS8n5YePemiuJbdVQ29496Fy4DHxShFe\nkdPSWcl0pyEZ9IcyJXM32thcGIzqRNGMI4zhPYKJLlqWiOqqXC7TyRDRmnc6s6C1\nHHhkdObnW1C12U3yMTbB9MUCgYEA5RFZMR3pZdAUgdTs0PSJGd4hzKNO8Y4q4QBk\nyUe7fvQ4kM+uWM+0b807lvJwt3W53e8CVEgiagOusF3sdAS2GprNP9UfzWhZTv1b\nsh+7bvMCCWhttKZTrdwEFpHt4IiywfnyxaiGs2eidbFFIL9JAkOowh1fb33UE8bC\nKb415p8CgYBK8HqAJXbWtCmzcrJpLNlIKbq7NJdcV9eYm8PDpDHx50QFVSrBdX/G\nh6IQL/UYxiVeNGXidqCs6WACWhCibpnXAPakitRcdT8e8k8QmJuQT0cn62T9J16m\nFUbllZZ7Q4S6KitRtRqah+sEiBGxO7oi3uXuiQqXsskZD9AzqEgm5QKBgGvrTHYT\nfY52BfNU+W1Ih/8j5BChL+Ql8pWmtdUOcotRTAUNkzpMQNobeuOWvPvx/utMW3CR\nu4TuzzJQTcIrJhBKtkBIjH8dllXcj4LP6GJRIriD9ouRgQL8EQEBJ20NegphU7tD\ntpJ3VNbV+ZeAB0mFztAFPp0sTuoyTe+UqZhJAoGBAM4guyMgHVlENBA3xHaZRnLo\nH82ctyJkiB7C0e17/iyIiU2+2uxgBk+TkVFzNWt7khH8CY+2qL8tHhws9FzKA7gT\nFcvKbrQwkLAgQP5Y+boQyZ8b3uu2OYC2K9UvlG9tWqViN23gFfMD3LCxxWCd/cF8\nzlZre2QjIYlDgZg3Uv7l\n-----END PRIVATE KEY-----\n",
+  "client_email": "file-manager-service@filemanagerapi-463005.iam.gserviceaccount.com",
+  "client_id": "103458948813865889125",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/file-manager-service%40filemanagerapi-463005.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

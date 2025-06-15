@@ -1,0 +1,46 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+releaseArguments.properties
+
+# Eclipse
+.classpath
+.project
+.settings/
+.sts4-cache/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Spring Boot auto-generated files
+*.log
+logs/
+tmp/
+*.tmp
+*.bak
+*.swp
+*.swo
+error_logs/
+
+# Google Drive Service Account Key (VERY IMPORTANT - REPLACE WITH YOUR ACTUAL FILENAME)
+# This ensures your sensitive key is NEVER committed to Git.
+filemanagerapi-4630005-ef089255ba53.json
+
+# Spring Boot application properties (if you have local-specific sensitive configs)
+# If your application.properties contains sensitive data specific to your local setup
+# that shouldn't be in Git, you might ignore it and use environment variables locally too,
+# or use application-local.properties ignored and application.properties committed.
+# For now, if it only has root-folder-id and app-name, it's generally okay to commit.
+# If you put your JSON key content in app.properties, definitely ignore it.
+# application.properties

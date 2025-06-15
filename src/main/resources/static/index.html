@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Manager</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #333;">
+    <div style="background-color: #ffffff; padding: 35px 45px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); width: 100%; max-width: 500px; box-sizing: border-box;">
+        <h1 style="text-align: center; color: #2c3e50; margin-bottom: 30px; font-size: 2.2em; font-weight: 600;">Upload Sales Data</h1>
+
+        <form id="uploadForm" style="display: block;">
+            <div style="margin-bottom: 25px;">
+                <label for="month" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Select Month:</label>
+                <select id="month" name="month" required
+                        style="width: 100%; padding: 12px 15px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 1em; color: #495057; background-color: #fff; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                    <option value="">-- Choose Month --</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label for="market" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Select Market:</label>
+                <select id="market" name="market" required
+                        style="width: 100%; padding: 12px 15px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 1em; color: #495057; background-color: #fff; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                    <option value="">-- Choose Market --</option>
+                    <option value="Amazon">Amazon</option>
+                    <option value="Shopify">Shopify</option>
+                    <option value="Shopee">Shopee</option>
+                    <option value="eBay">eBay</option>
+                    <option value="Faire">Faire</option>
+                    <option value="FM wholesale">FM wholesale</option>
+                    <option value="Paypal">Paypal</option>
+                    <option value="TikTok">TikTok</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label for="country" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Select Country:</label>
+                <select id="country" name="country" required
+                        style="width: 100%; padding: 12px 15px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 1em; color: #495057; background-color: #fff; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                    <option value="">-- Choose Country --</option>
+                    <option value="US">US</option>
+                    <option value="UK">UK</option>
+                    <option value="CA">CA</option>
+                    <option value="MX">MX</option>
+                    <option value="PL">PL</option>
+                    <option value="NL">NL</option>
+                    <option value="BE">BE</option>
+                    <option value="SE">SE</option>
+                    <option value="TR">TR</option>
+                    <option value="IT">IT</option>
+                    <option value="FR">FR</option>
+                    <option value="ES">ES</option>
+                    <option value="DE">DE</option>
+                    <option value="IE">IE</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label for="brand" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Select Brand:</label>
+                <select id="brand" name="brand" required
+                        style="width: 100%; padding: 12px 15px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 1em; color: #495057; background-color: #fff; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                    <option value="">-- Choose Brand --</option>
+                    <option value="Bryco">Bryco</option>
+                    <option value="FurstenMED Health Nutrition">FurstenMED Health Nutrition</option>
+                    <option value="HoldCo">HoldCo</option>
+                    <option value="HUG">HUG</option>
+                    <option value="Infloatables">Infloatables</option>
+                    <option value="Invigorated Water">Invigorated Water</option>
+                    <option value="Jiva Botanicals">Jiva Botanicals</option>
+                    <option value="Maxi Nature Online">Maxi Nature Online</option>
+                    <option value="Maxpower Planet">Maxpower Planet</option>
+                    <option value="Mighty Paw">Mighty Paw</option>
+                    <option value="No default brand">No default brand</option>
+                    <option value="PlantVital">PlantVital</option>
+                    <option value="Pure Innovation">Pure Innovation</option>
+                    <option value="ShopClarks">ShopClarks</option>
+                    <option value="Spark Pod">Spark Pod</option>
+                    <option value="SUNUV">SUNUV</option>
+                    <option value="Purablaze">Purablaze</option>
+                    <option value="The Beard Club">The Beard Club</option>
+                    <option value="The Healthy Dog Co">The Healthy Dog Co</option>
+                    <option value="Ubdyo">Ubdyo</option>
+                    <option value="Ultra Cuisine">Ultra Cuisine</option>
+                    <option value="VNS Creations">VNS Creations</option>
+                    <option value="Wake Skincare">Wake Skincare</option>
+                    <option value="Zoey Supplies">Zoey Supplies</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Date Range:</label>
+                <div style="display: flex; gap: 15px;">
+                    <div style="flex: 1;">
+                        <label for="fromDate" style="display: block; margin-bottom: 5px; font-size: 0.9em; color: #666;">From Date:</label>
+                        <input type="date" id="fromDate" name="fromDate" required
+                               style="width: 100%; padding: 12px 15px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 1em; color: #495057; background-color: #fff; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="toDate" style="display: block; margin-bottom: 5px; font-size: 0.9em; color: #666;">To Date:</label>
+                        <input type="date" id="toDate" name="toDate" required
+                               style="width: 100%; padding: 12px 15px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 1em; color: #495057; background-color: #fff; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label for="file" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Select CSV File:</label>
+                <input type="file" id="file" name="file" accept=".csv" required
+                       style="width: 100%; padding: 12px 15px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 1em; color: #495057; background-color: #fff; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+            </div>
+
+            <button type="submit" id="uploadButton"
+                    style="width: 100%; padding: 14px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease; margin-top: 20px;">
+                Upload File
+            </button>
+        </form>
+
+        <div id="message" style="margin-top: 25px; padding: 15px; border-radius: 8px; font-size: 0.95em; text-align: center; min-height: 20px;"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const uploadForm = document.getElementById('uploadForm');
+            const uploadButton = document.getElementById('uploadButton');
+            const messageArea = document.getElementById('message');
+
+            uploadForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission (page reload)
+
+                // Clear previous messages
+                messageArea.textContent = '';
+                messageArea.className = 'message-area loading'; // Apply loading style
+                messageArea.textContent = 'Uploading... Please wait.';
+                uploadButton.disabled = true; // Disable button during upload
+
+                const formData = new FormData();
+                formData.append('month', document.getElementById('month').value);
+                formData.append('market', document.getElementById('market').value);
+                formData.append('country', document.getElementById('country').value);
+                formData.append('brand', document.getElementById('brand').value);
+                formData.append('fromDate', document.getElementById('fromDate').value);
+                formData.append('toDate', document.getElementById('toDate').value);
+                formData.append('file', document.getElementById('file').files[0]); // Get the actual file object
+
+                try {
+                    const response = await fetch('/api/drive/upload', {
+                        method: 'POST',
+                        body: formData // FormData automatically sets Content-Type: multipart/form-data
+                    });
+
+                    const responseText = await response.text(); // Get response as text
+
+                    if (response.ok) { // Check if HTTP status is 2xx
+                        messageArea.className = 'message-area success';
+                        messageArea.textContent = `Success: ${responseText}`;
+                        uploadForm.reset(); // Clear the form after successful upload
+                    } else {
+                        // Handle server-side errors (e.g., 400 Bad Request, 500 Internal Server Error)
+                        messageArea.className = 'message-area error';
+                        messageArea.textContent = `Error (${response.status}): ${responseText || 'An unknown error occurred.'}`;
+                    }
+                } catch (error) {
+                    // Handle network errors or issues before reaching the server
+                    messageArea.className = 'message-area error';
+                    messageArea.textContent = `Network Error: ${error.message}. Please check your connection or server status.`;
+                    console.error('Fetch error:', error);
+                } finally {
+                    uploadButton.disabled = false; // Re-enable button
+                }
+            });
+        });
+    </script>
+
+    <!-- Inline styles for message area statuses (copied from style.css) -->
+    <style>
+        .message-area {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            text-align: center;
+            min-height: 20px; /* To maintain spacing even when empty */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        .message-area.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message-area.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message-area.loading {
+            background-color: #e2e3e5;
+            color: #383d41;
+            border: 1px solid #d6d8db;
+        }
+
+        /* Adjustments for file input button in inline style are tricky without pseudo-elements.
+           The CSS was previously external and handled this. For inline, it's harder.
+           Let's just ensure standard input styling. */
+        input[type="file"] {
+            /* The default browser styling for file input buttons varies and is hard to control with inline CSS. */
+            /* We rely on the browser's default appearance or minimal styling for the input box itself. */
+        }
+    </style>
+</body>
+</html>
