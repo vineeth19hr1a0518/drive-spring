@@ -6,7 +6,6 @@ FROM openjdk:17-jdk-alpine AS build
 RUN apk add --no-cache curl tar bash
 
 # Install Maven explicitly.
-# *** IMPORTANT CHANGE HERE: Updated Maven version to 3.9.10 ***
 ARG MAVEN_VERSION=3.9.10
 ARG BASE_URL=https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries
 ENV MAVEN_HOME /opt/maven
@@ -39,11 +38,11 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR file from the build stage
-COPY --from=build target/GoogleDrive-0.0.1-SNAPSHOT.jar app.jar
+# *** IMPORTANT CHANGE HERE: Corrected JAR file name ***
+COPY --from=build /app/target/drive-spring-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port your Spring Boot application listens on (default is 8080)
 EXPOSE 8080
 
 # Define the command to run your application
 ENTRYPOINT ["java", "-jar", "app.jar"]
-# CMD ["java", "-jar", "target/GoogleDrive-0.0.1-SNAPSHOT.jar"]
