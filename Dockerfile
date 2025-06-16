@@ -1,17 +1,36 @@
-# Use Maven image with JDK 17 pre-installed
-FROM maven:3.9.4-eclipse-temurin-17
+# Stage 1: Build the Spring Boot application using a Maven image
+FROM maven:3.9.5-openjdk-17 AS build
 
-# Set the working directory inside the container
+# Set the working directory inside the build container
 WORKDIR /app
 
-# Copy the entire project into the container
-COPY . .
+# Copy the Maven project files (pom.xml first to leverage Docker cache for dependencies)
+COPY pom.xml .
 
-# Grant execute permissions to mvnw
-RUN chmod +x mvnw
+# Download dependencies (this layer will be cached if pom.xml doesn't change)
+RUN mvn dependency:go-offline
 
-# Build the Spring Boot application
-RUN ./mvnw clean install -DskipTests
+# Copy the rest of the source code
+COPY src ./src
 
-# Replace with your actual JAR filename after first build
-CMD ["java", "-jar", "target/GoogleDrive-0.0.1-SNAPSHOT.jar"]
+# Build the application, skipping tests for faster build in CI/CD
+RUN mvn clean install -DskipTests
+
+# Stage 2: Create the final lightweight runtime image
+FROM openjdk:17-jdk-slim
+
+# Set the working directory for the runtime container
+WORKDIR /app
+
+# Copy the built JAR file from the build stage
+# Assuming your Spring Boot application will produce a JAR named 'drive-spring-0.0.1-SNAPSHOT.jar'
+# You can confirm the exact JAR name in your pom.xml's <build><finalName> or by running 'mvn clean install' locally.
+# If you don't specify a <finalName>, it typically follows the artifactId-version.jar pattern.
+COPY --from=build /app/target/drive-spring-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the port your Spring Boot application listens on (default is 8080)
+EXPOSE 8080
+
+# Define the command to run your application
+ENTRYPOINT ["java", "-jar", "app.jar"]
+# CMD ["java", "-jar", "target/GoogleDrive-0.0.1-SNAPSHOT.jar"]
