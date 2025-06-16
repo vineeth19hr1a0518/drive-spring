@@ -5,10 +5,10 @@ FROM openjdk:17-jdk-alpine AS build
 # Install curl and tar, which are needed to download and extract Maven
 RUN apk add --no-cache curl tar bash
 
-# Install Maven explicitly. This makes the build image slightly larger,
-# but guarantees Maven is available.
+# Install Maven explicitly.
 ARG MAVEN_VERSION=3.9.6
-ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
+# *** IMPORTANT CHANGE HERE: Using a different Apache mirror ***
+ARG BASE_URL=https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries
 ENV MAVEN_HOME /opt/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
 
