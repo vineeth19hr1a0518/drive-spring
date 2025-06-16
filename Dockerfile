@@ -1,19 +1,6 @@
-# Stage 1: Build the Spring Boot application
-# Use a standard OpenJDK image for the build stage.
-FROM openjdk:17-jdk AS build
-
-# Install Maven explicitly. This makes the build image slightly larger,
-# but guarantees Maven is available and avoids "pull access denied" issues with specific Maven images.
-# We'll download Maven and set up its PATH.
-ARG MAVEN_VERSION=3.9.6
-ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
-ENV MAVEN_HOME /opt/maven
-ENV PATH $MAVEN_HOME/bin:$PATH
-
-RUN mkdir -p ${MAVEN_HOME} \
-    && curl -fsSL ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
-    | tar -xzC ${MAVEN_HOME} --strip-components=1 \
-    && mvn -version
+# Stage 1: Build the Spring Boot application using a Maven image
+# Trying a more generic, yet common, Maven image tag that includes OpenJDK 17
+FROM maven:3.9-openjdk-17 AS build
 
 # Set the working directory inside the build container
 WORKDIR /app
@@ -37,7 +24,6 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR file from the build stage
-# Ensure this matches your actual JAR name: drive-spring-0.0.1-SNAPSHOT.jar
 COPY --from=build /app/target/drive-spring-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port your Spring Boot application listens on (default is 8080)
