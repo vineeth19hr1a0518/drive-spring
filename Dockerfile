@@ -1,10 +1,6 @@
 # Stage 1: Build the Spring Boot application using a Maven image
-FROM openjdk:17-jdk AS build
-
-# Install Maven on top of the OpenJDK image
-# This is a basic way; for production, consider downloading a specific Maven version
-# and setting up its environment variables properly. For a simple build, this might suffice.
-RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
+# This image already has Maven and JDK installed, making it ideal for the build stage.
+FROM cimg/maven:3.9.5-jdk17 AS build
 
 # Set the working directory inside the build container
 WORKDIR /app
