@@ -1,5 +1,6 @@
 # Stage 1: Build the Spring Boot application using a Maven image
-FROM maven:3.9.5-openjdk-17 AS build
+# Use a valid Maven image that includes OpenJDK 17
+FROM maven:3.9.5-jdk-17 AS build
 
 # Set the working directory inside the build container
 WORKDIR /app
@@ -23,9 +24,6 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR file from the build stage
-# Assuming your Spring Boot application will produce a JAR named 'drive-spring-0.0.1-SNAPSHOT.jar'
-# You can confirm the exact JAR name in your pom.xml's <build><finalName> or by running 'mvn clean install' locally.
-# If you don't specify a <finalName>, it typically follows the artifactId-version.jar pattern.
 COPY --from=build /app/target/drive-spring-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port your Spring Boot application listens on (default is 8080)
