@@ -38,7 +38,6 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR file from the build stage
-# *** CORRECTED JAR file name based on your directory structure ***
 COPY --from=build /app/target/GoogleDrive-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port your Spring Boot application listens on (default is 8080)
