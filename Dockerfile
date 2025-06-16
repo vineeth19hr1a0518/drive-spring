@@ -1,6 +1,21 @@
-# Stage 1: Build the Spring Boot application using a Maven image
-# Trying a more generic, yet common, Maven image tag that includes OpenJDK 17
-FROM maven:3.9-openjdk-17 AS build
+# Stage 1: Build the Spring Boot application
+# Use a minimal OpenJDK Alpine image for the build stage.
+FROM openjdk:17-jdk-alpine AS build
+
+# Install curl and tar, which are needed to download and extract Maven
+RUN apk add --no-cache curl tar bash
+
+# Install Maven explicitly. This makes the build image slightly larger,
+# but guarantees Maven is available.
+ARG MAVEN_VERSION=3.9.6
+ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
+ENV MAVEN_HOME /opt/maven
+ENV PATH $MAVEN_HOME/bin:$PATH
+
+RUN mkdir -p ${MAVEN_HOME} \
+    && curl -fsSL ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+    | tar -xzC ${MAVEN_HOME} --strip-components=1 \
+    && mvn -version
 
 # Set the working directory inside the build container
 WORKDIR /app
