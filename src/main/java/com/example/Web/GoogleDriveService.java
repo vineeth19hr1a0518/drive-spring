@@ -1,8 +1,5 @@
 package com.example.Web;
 
-
-
-
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -17,15 +14,15 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
+// import org.springframework.core.io.ClassPathResource; // No longer strictly needed if only using FileInputStream for file system path
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream; // Import for ByteArrayInputStream
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets; // Import for StandardCharsets
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.time.Month;
 import java.util.Collections;
@@ -33,6 +30,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+// NEW IMPORTS FOR FILE SYSTEM READING
+import java.io.FileInputStream; // <-- NEW
+import java.io.FileNotFoundException; // <-- NEW
+import java.io.File; // <-- NEW
 
 @Service
 public class GoogleDriveService {
@@ -42,9 +43,9 @@ public class GoogleDriveService {
     @Value("${GOOGLE_APPLICATION_CREDENTIALS_JSON_STRING:}")
     private String serviceAccountKeyJsonString;
 
-    // Path to the service account JSON key file (for local development fallback)
-    // This will only be used if serviceAccountKeyJsonString is empty.
-    @Value("${google.drive.service-account-key-path:}") // Optional for local dev
+    // Path to the service account JSON key file (for local development fallback OR Render Secret File)
+    // This will now point to the /etc/secrets/google-credentials.json path
+    @Value("${google.drive.service-account-key-path:/etc/secrets/google-credentials.json}") // Default to Render's secret path
     private String serviceAccountKeyPath;
 
     @Value("${google.drive.root-folder-id}")
@@ -61,14 +62,36 @@ public class GoogleDriveService {
         InputStream serviceAccountStream = null;
         try {
             if (serviceAccountKeyJsonString != null && !serviceAccountKeyJsonString.isEmpty()) {
-                // Production: Read JSON key from environment variable
+                // OPTION 1: Production (Recommended) - Read JSON key from environment variable string
+                System.out.println("Attempting to load Google credentials from environment variable GOOGLE_APPLICATION_CREDENTIALS_JSON_STRING.");
                 serviceAccountStream = new ByteArrayInputStream(serviceAccountKeyJsonString.getBytes(StandardCharsets.UTF_8));
-            } else if (serviceAccountKeyPath != null && !serviceAccountKeyPath.isEmpty()){
-                // Local Development Fallback: Read JSON key from classpath file
-                ClassPathResource resource = new ClassPathResource(serviceAccountKeyPath);
-                serviceAccountStream = resource.getInputStream();
+            } else if (serviceAccountKeyPath != null && !serviceAccountKeyPath.isEmpty()) {
+                // OPTION 2: Render Secret File or Local File System Path
+                // This path should be "/etc/secrets/google-credentials.json" when on Render,
+                // or a local path like "src/main/resources/google-credentials.json" for local dev
+                java.io.File credentialsFile = new java.io.File(serviceAccountKeyPath); // Use java.io.File to avoid conflict with drive.model.File
+
+                if (credentialsFile.exists() && credentialsFile.isFile()) {
+                    System.out.println("Attempting to load Google credentials from file system path: " + serviceAccountKeyPath);
+                    serviceAccountStream = new FileInputStream(credentialsFile);
+                } else {
+                    // Fallback for local development if credentials file is on classpath (less secure for production)
+                    // This scenario is for when the file is literally *inside* your JAR
+                    System.err.println("Google credentials file NOT found at file system path: " + serviceAccountKeyPath);
+                    System.err.println("Attempting to load as a Class Path Resource (fallback for local dev if file is bundled in JAR)...");
+                    // Use ClassLoader to get resource as stream for flexibility
+                    serviceAccountStream = getClass().getClassLoader().getResourceAsStream(serviceAccountKeyPath);
+                    if (serviceAccountStream == null) {
+                        throw new FileNotFoundException("Google credentials.json not found on file system or as a classpath resource at: " + serviceAccountKeyPath);
+                    }
+                }
             } else {
                 throw new IOException("Google service account credentials not found. Neither environment variable GOOGLE_APPLICATION_CREDENTIALS_JSON_STRING nor file path google.drive.service-account-key-path is configured.");
+            }
+
+            // Ensure stream was obtained successfully
+            if (serviceAccountStream == null) {
+                 throw new IOException("Failed to obtain InputStream for Google credentials.json after all attempts.");
             }
 
             GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccountStream)
@@ -91,9 +114,22 @@ public class GoogleDriveService {
                     requestInitializer)
                     .setApplicationName(applicationName)
                     .build();
+
+            System.out.println("GoogleDriveService initialized successfully.");
+
+        } catch (FileNotFoundException e) {
+            System.err.println("ERROR: Google credentials file not found: " + e.getMessage());
+            throw e; // Re-throw to indicate critical failure
+        } catch (IOException | GeneralSecurityException e) {
+            System.err.println("ERROR: Failed to initialize GoogleDriveService: " + e.getMessage());
+            throw e; // Re-throw to indicate critical failure
         } finally {
             if (serviceAccountStream != null) {
-                serviceAccountStream.close();
+                try {
+                    serviceAccountStream.close();
+                } catch (IOException e) {
+                    System.err.println("Error closing service account stream: " + e.getMessage());
+                }
             }
         }
     }
