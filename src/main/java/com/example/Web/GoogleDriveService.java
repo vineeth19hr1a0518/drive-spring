@@ -154,7 +154,7 @@ public class GoogleDriveService {
         fileMetadata.setParents(Collections.singletonList(countryFolderId));
 
         File uploadedFile = driveService.files().create(fileMetadata, mediaContent)
-        .setSupportsAllDrives(true) // <-- ADD THIS LINE
+        .setSupportsAllDrives(true) // <-- THIS LINE
         .setFields("id, name, webContentLink, webViewLink, mimeType, size")
         .execute();
 
@@ -167,7 +167,8 @@ public class GoogleDriveService {
         FileList result = driveService.files().list()
         .setQ(query)
         .setSpaces("drive")
-        .setIncludeItemsFromAllDrives(true) // <-- ADD THIS LINE
+        .setIncludeItemsFromAllDrives(true)
+        .setSupportsAllDrives(true) // <-- THIS LINE
         .setFields("files(id, name)")
         .execute();
 
@@ -181,10 +182,10 @@ public class GoogleDriveService {
             fileMetadata.setMimeType("application/vnd.google-apps.folder");
             fileMetadata.setParents(Collections.singletonList(parentId));
 
-            File createdFolder = driveService.files().create(fileMetadata)
-            .setSupportsAllDrives(true) // <-- ADD THIS LINE
-            .setFields("id, name")
-            .execute();
+        File createdFolder = driveService.files().create(fileMetadata)
+        .setSupportsAllDrives(true) // <-- THIS LINE
+        .setFields("id, name")
+        .execute();
 
             return createdFolder.getId();
         }
