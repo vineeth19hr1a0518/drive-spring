@@ -153,9 +153,10 @@ public class GoogleDriveService {
         fileMetadata.setMimeType(file.getContentType());
         fileMetadata.setParents(Collections.singletonList(countryFolderId));
 
-        File uploadedFile = driveService.files().create(fileMetadata, mediaContent) // This refers to com.google.api.services.drive.model.File
-                .setFields("id, name, webContentLink, webViewLink, mimeType, size")
-                .execute();
+        File uploadedFile = driveService.files().create(fileMetadata, mediaContent)
+        .setSupportsAllDrives(true) // <-- ADD THIS LINE
+        .setFields("id, name, webContentLink, webViewLink, mimeType, size")
+        .execute();
 
         return uploadedFile.getId();
     }
@@ -164,10 +165,11 @@ public class GoogleDriveService {
         String query = String.format("name = '%s' and '%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false", folderName, parentId);
 
         FileList result = driveService.files().list()
-                .setQ(query)
-                .setSpaces("drive")
-                .setFields("files(id, name)")
-                .execute();
+        .setQ(query)
+        .setSpaces("drive")
+        .setIncludeItemsFromAllDrives(true) // <-- ADD THIS LINE
+        .setFields("files(id, name)")
+        .execute();
 
         List<File> files = result.getFiles(); // This refers to com.google.api.services.drive.model.File
 
@@ -179,9 +181,11 @@ public class GoogleDriveService {
             fileMetadata.setMimeType("application/vnd.google-apps.folder");
             fileMetadata.setParents(Collections.singletonList(parentId));
 
-            File createdFolder = driveService.files().create(fileMetadata) // This refers to com.google.api.services.drive.model.File
-                    .setFields("id, name")
-                    .execute();
+            File createdFolder = driveService.files().create(fileMetadata)
+            .setSupportsAllDrives(true) // <-- ADD THIS LINE
+            .setFields("id, name")
+            .execute();
+
             return createdFolder.getId();
         }
     }
